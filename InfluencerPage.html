@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biz-Media - Influencer Marketing</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-item {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-box {
+            padding: 10px 40px 10px 15px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            width: 300px;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-box::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            background: #1a1a2e;
+            padding: 0;
+        }
+
+        .tab-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        overflow-x: auto;
+        }
+
+        .tab-item {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-item:hover, .tab-item.active {
+            color: #8b5cf6;
+            border-bottom-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            display: flex;
+            gap: 30px;
+        }
+
+        /* Sidebar Filters */
+        .sidebar {
+            width: 280px;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+            position: sticky;
+            top: 30px;
+        }
+
+        .filter-section {
+            margin-bottom: 25px;
+        }
+
+        .filter-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+
+        .filter-content {
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .filter-option:hover {
+            background: #f8f9fa;
+        }
+
+        .filter-option input {
+            accent-color: #6366f1;
+        }
+
+        .budget-range {
+            margin-top: 10px;
+        }
+
+        .budget-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        /* Content Area */
+        .content-area {
+            flex: 1;
+        }
+
+        .page-header {
+            margin-bottom: 25px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .breadcrumb {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .breadcrumb a {
+            color: #6366f1;
+            text-decoration: none;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .filter-tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: #6366f1;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .sort-dropdown {
+            padding: 10px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: white;
+            font-size: 14px;
+        }
+
+        /* Influencer Grid */
+        .influencer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .influencer-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .influencer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .recommended-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .influencer-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: white;
+        }
+
+        .influencer-name {
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .influencer-category {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .influencer-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 16px;
+            font-weight: 600;
+            color: #6366f1;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .pricing {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .price {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .price-type {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .contact-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .close {
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+                padding: 20px 15px;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .influencer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+        
+
+            .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 18px;
+            color: #666;
+            }
+
+            .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+            }
+
+            .no-results-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+           }
+           .modal-content {
+           width: 95%;
+           margin: 20px;
+           max-height: 90vh;
+           }
+    }
+        @media (max-width: 480px) {
+        .influencer-stats {
+            flex-direction: column;
+            gap: 10px;
+        }
+            
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                🌐 Biz-Media
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="#" class="nav-item">Home</a>
+                <a href="#" class="nav-item">Services</a>
+                <a href="#" class="nav-item">About Us</a>
+                <a href="#" class="nav-item">Contact Us</a>
+            </nav>
+            
+            <div class="header-actions">
+                <div class="search-container">
+                    <input type="text" class="search-box" placeholder="Search Channel, Media" id="globalSearch">
+                    <button class="search-btn" onclick="performGlobalSearch()">🔍</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs">
+        <div class="tab-container">
+            <a href="#" class="tab-item">📖 Magazine</a>
+            <a href="#" class="tab-item active">👑 Influencer</a>
+            <a href="#" class="tab-item">📰 Newspaper</a>
+            <a href="#" class="tab-item">💻 Digital</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Sidebar Filters -->
+        <aside class="sidebar">
+            <h3 style="margin-bottom: 20px; color: #333;">Filters</h3>
+            
+            <div class="filter-section">
+                <div class="filter-title" onclick="toggleFilter('location')">
+                    📍 Audience Location
+                    <span>▼</span>
+                </div>
+                <div class="filter-content" id="location-filter">
+                    <input type="text" placeholder="Type to search" class="budget-input" id="locationSearch">
+                    <div class="filter-option">
+                        <input type="checkbox" id="mumbai" value="mumbai">
+                        <label for="mumbai">Mumbai</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="delhi" value="delhi">
+                        <label for="delhi">Delhi</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="bangalore" value="bangalore">
+                        <label for="bangalore">Bangalore</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="pune" value="pune">
+                        <label for="pune">Pune</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <div class="filter-title" onclick="toggleFilter('category')">
+                    🎯 Category
+                    <span>▼</span>
+                </div>
+                <div class="filter-content" id="category-filter">
+                    <div class="filter-option">
+                        <input type="checkbox" id="health" value="health">
+                        <label for="health">Health And Fitness</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="comedy" value="comedy">
+                        <label for="comedy">Comedy</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="entertainment" value="entertainment">
+                        <label for="entertainment">Entertainment</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="automobile" value="automobile">
+                        <label for="automobile">Automobile</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="fashion" value="fashion">
+                        <label for="fashion">Fashion</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="food" value="food">
+                        <label for="food">Food & Lifestyle</label>
+                    </div>
+                </div>
+            </div>
+
+           <div class="filter-section">
+    <div class="filter-title" onclick="toggleFilter('platform')">
+        🔗 Platform
+        <span>▼</span>
+    </div>
+    <div class="filter-content" id="platform-filter">
+        <div class="filter-option">
+            <input type="checkbox" id="instagram" value="instagram">
+            <label for="instagram">Instagram</label>
+        </div>
+        <div class="filter-option">
+            <input type="checkbox" id="facebook" value="facebook">
+            <label for="facebook">Facebook</label>
+        </div>
+        <div class="filter-option">
+            <input type="checkbox" id="linkedin" value="linkedin">
+            <label for="linkedin">LinkedIn</label>
+        </div>
+        <div class="filter-option">
+            <input type="checkbox" id="twitter" value="twitter">
+            <label for="twitter">Twitter</label>
+        </div>
+    </div>
+</div>
+            <div class="filter-section">
+                <div class="filter-title" onclick="toggleFilter('budget')">
+                    💰 Budget Range
+                    <span>▼</span>
+                </div>
+                <div class="filter-content" id="budget-filter">
+                    <div class="budget-range">
+                        <input type="number" placeholder="Min Budget" class="budget-input" id="minBudget">
+                        <input type="number" placeholder="Max Budget" class="budget-input" id="maxBudget">
+                    </div>
+                </div>
+            </div>
+           <div class="filter-section">
+    <div class="filter-title" onclick="toggleFilter('gender')">
+        👤 Gender
+        <span>▼</span>
+    </div>
+    <div class="filter-content" id="gender-filter">
+        <div class="filter-option">
+            <input type="checkbox" id="male" value="male">
+            <label for="male">Male</label>
+        </div>
+        <div class="filter-option">
+            <input type="checkbox" id="female" value="female">
+            <label for="female">Female</label>
+        </div>
+        <div class="filter-option">
+            <input type="checkbox" id="other" value="other">
+            <label for="other">Other</label>
+        </div>
+    </div>
+</div>
+            <div class="filter-section">
+                <div class="filter-title" onclick="toggleFilter('followers')">
+                    👥 Followers Range
+                    <span>▼</span>
+                </div>
+                <div class="filter-content" id="followers-filter">
+                    <div class="filter-option">
+                        <input type="checkbox" id="micro" value="micro">
+                        <label for="micro">Micro (1K-100K)</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="macro" value="macro">
+                        <label for="macro">Macro (100K-1M)</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="mega" value="mega">
+                        <label for="mega">Mega (1M+)</label>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="applyFilters()" style="width: 100%; padding: 12px; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; border: none; border-radius: 10px; font-weight: 600; margin-top: 20px; cursor: pointer;">
+                Apply Filters
+            </button>
+            
+            <button onclick="clearFilters()" style="width: 100%; padding: 12px; background: #f8f9fa; color: #666; border: 1px solid #ddd; border-radius: 10px; font-weight: 600; margin-top: 10px; cursor: pointer;">
+                Clear All
+            </button>
+        </aside>
+
+        <!-- Content Area -->
+        <section class="content-area">
+            <div class="page-header">
+                <h1 class="page-title">Influencer-Marketing</h1>
+                <nav class="breadcrumb">
+                    <a href="#">Home</a> › Influencer-Marketing
+                </nav>
+            </div>
+
+            <div class="controls">
+                <div class="filter-tags" id="activeTags">
+                    <span class="tag">Recommended</span>
+                </div>
+                
+                <select class="sort-dropdown" id="sortBy" onchange="sortInfluencers()">
+                    <option value="recommended">Sort by: Top Searched</option>
+                    <option value="followers">Followers (High to Low)</option>
+                    <option value="budget">Budget (Low to High)</option>
+                    <option value="name">Name (A to Z)</option>
+                </select>
+            </div>
+
+            <div class="influencer-grid" id="influencerGrid">
+                <!-- Influencers will be loaded here -->
+            </div>
+
+            <div class="loading" id="loading" style="display: none;">
+                Loading influencers...
+            </div>
+
+            <div class="no-results" id="noResults" style="display: none;">
+                <div class="no-results-icon">🔍</div>
+                <h3>No influencers found</h3>
+                <p>Try adjusting your filters or search terms</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal -->
+    <div class="modal" id="influencerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Influencer Details</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div id="modalBody">
+                <!-- Content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample influencer data
+        const influencersData = [
+            {
+                id: 1,
+                name: "Ranveer Allahbadia",
+                category: "Health And Fitness",
+                followers: 8200000,
+                engagement: "4.2%",
+                avgViews: "2.1M",
+                budget: "On Request",
+                minBudget: 500000,
+                location: "mumbai",
+                platforms: ["instagram", "facebook"], // Add this
+                gender: "male", // Add this
+                recommended: true,
+                image: "💪"
+            },
+            {
+                id: 2,
+                name: "Raj Shamani",
+                category: "Comedy",
+                followers: 9590000,
+                engagement: "3.8%",
+                avgViews: "1.8M",
+                budget: "₹3,75,000 Min Spend",
+                minBudget: 375000,
+                location: "mumbai",
+                platforms: ["instagram", "facebook"], // Add this
+                gender: "male", // Add this
+                recommended: true,
+                image: "😄"
+            },
+            {
+                id: 3,
+                name: "Rajat Dalal",
+                category: "Health And Fitness",
+                followers: 4200000,
+                engagement: "5.1%",
+                avgViews: "2.5M",
+                budget: "₹17,00,000 Min Spend",
+                minBudget: 1700000,
+                location: "delhi",
+                platforms: ["instagram", "facebook"], // Add this
+                gender: "male", // Add this
+                recommended: false,
+                image: "🏋️"
+            },
+            {
+                id: 4,
+                name: "Prajakta Koli",
+                category: "Entertainment",
+                followers: 8800000,
+                engagement: "4.7%",
+                avgViews: "3.2M",
+                budget: "₹10,00,000 Min Spend",
+                minBudget: 1000000,
+                location: "mumbai",
+                platforms: ["instagram", "facebook"], // Add this
+                gender: "female", // Add this
+                recommended: true,
+                image: "🎭"
+            },
+            {
+                id: 5,
+                name: "Typical Kannadiga",
+                category: "Automobile",
+                followers: 385000,
+                engagement: "6.2%",
+                avgViews: "450K",
+                budget: "₹1,20,000 Min Spend",
+                minBudget: 120000,
+                location: "bangalore",
+                platforms: ["instagram", "facebook"], // Add this
+                gender: "male", // Add this
+                recommended: true,
+                image: "🚗"
+            },
+            {
+                id: 6,
+                name: "Saket Gokhale",
+                category: "Health And Fitness",
+                followers: 1040000,
+                engagement: "4.9%",
+                avgViews: "580K",
+                budget: "₹13,69,200 Min Spend",
+                minBudget: 1369200,
+                location: "pune",
+                platforms: ["instagram", "facebook"], // Add this
+                gender: "male", // Add this
+                recommended: false,
+                image: "🧘"
+            },
+            {
+                id: 7,
+                name: "Ashish Chanchlani",
+                category: "Comedy",
+                followers: 15200000,
+                engagement: "5.8%",
+                avgViews: "4.2M",
+                budget: "₹25,00,000 Min Spend",
+                minBudget: 2500000,
+                location: "mumbai",
+                platforms: ["instagram", "facebook"], // Add this
+                gender: "male", // Add this
+                recommended: true,
+                image: "🤣"
+            },
+            {
+                id: 8,
+                name: "Kusha Kapila",
+                category: "Fashion",
+                followers: 3200000,
+                engagement: "4.1%",
+                avgViews: "1.1M",
+                budget: "₹8,50,000 Min Spend",
+                minBudget: 850000,
+                location: "delhi",
+                platforms: ["instagram", "facebook"], // Add this
+                gender: "female", // Add this
+                recommended: false,
+                image: "👗"
+            }
+        ];
+
+        let filteredInfluencers = [...influencersData];
+        let currentFilters = {};
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            displayInfluencers(filteredInfluencers);
+        });
+
+        // Display influencers
+        function displayInfluencers(influencers) {
+            const grid = document.getElementById('influencerGrid');
+            const loading = document.getElementById('loading');
+            const noResults = document.getElementById('noResults');
+            
+            loading.style.display = 'block';
+            grid.innerHTML = '';
+            noResults.style.display = 'none';
+            
+            setTimeout(() => {
+                loading.style.display = 'none';
+                
+                if (influencers.length === 0) {
+                    noResults.style.display = 'block';
+                    return;
+                }
+                
+                influencers.forEach(influencer => {
+                    const card = createInfluencerCard(influencer);
+                    grid.appendChild(card);
+                });
+            }, 500);
+        }
+
+        // Create influencer card
+        function createInfluencerCard(influencer) {
+            const card = document.createElement('div');
+            card.className = 'influencer-card';
+            card.onclick = () => openModal(influencer);
+            
+            card.innerHTML = `
+                ${influencer.recommended ? '<div class="recommended-badge">Recommended</div>' : ''}
+                <div class="influencer-image">${influencer.image}</div>
+                <div class="influencer-name">${influencer.name}</div>
+                <div class="influencer-category">${influencer.category}</div>
+                <div class="influencer-stats">
+                    <div class="stat">
+                        <div class="stat-number">👥 ${formatNumber(influencer.followers)}</div>
+                        <div class="stat-label">Followers</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">📊 ${influencer.engagement}</div>
+                        <div class="stat-label">Engagement</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">👁️ ${influencer.avgViews}</div>
+                        <div class="stat-label">Avg Views</div>
+                    </div>
+                </div>
+                <div class="pricing">
+                    <div class="price">${influencer.budget}</div>
+                    <div class="price-type">Campaign Cost</div>
+                </div>
+                <button class="contact-btn" onclick="event.stopPropagation(); contactInfluencer('${influencer.name}'); return false;">
+                    Contact Now
+                </button>
+            `;
+            
+            return card;
+        }
+
+        // Format numbers
+        function formatNumber(num) {
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(1) + 'M';
+            } else if (num >= 1000) {
+                return (num / 1000).toFixed(0) + 'K';
+            }
+            return num.toString();
+        }
+        //toggle filter
+       function toggleFilter(filterId) {
+    const content = document.getElementById(filterId + '-filter');
+    const arrow = event.target.querySelector('span') || event.target.parentElement.querySelector('span');
+     if (!arrow) return;
+    const isHidden = content.style.display === 'none' || window.getComputedStyle(content).display === 'none';
+    
+    if (isHidden) {
+        content.style.display = 'block';
+        arrow.textContent = '▼';
+    } else {
+        content.style.display = 'none';
+        arrow.textContent = '▶';
+    }
+}
+        // Apply filters
+        function applyFilters() {
+            const filters = {
+                categories: getCheckedValues('category'),
+                locations: getCheckedValues('location'),
+                platforms: getCheckedValues('platform'), // Add this line
+                followers: getCheckedValues('followers'),
+                gender: getCheckedValues('gender'), // Add this line too
+                minBudget: document.getElementById('minBudget').value,
+                maxBudget: document.getElementById('maxBudget').value
+            };
+            
+            currentFilters = filters;
+            
+            filteredInfluencers = influencersData.filter(influencer => {
+                // Category filter
+                if (filters.categories.length > 0) {
+                    const categoryMatch = filters.categories.some(cat => 
+                        influencer.category.toLowerCase().includes(cat)
+                    );
+                    if (!categoryMatch) return false;
+                }
+                
+                // Location filter
+                if (filters.locations.length > 0 && !filters.locations.includes(influencer.location)) {
+                    return false;
+                }
+
+                // Platform filter
+                if (filters.platforms && filters.platforms.length > 0) {
+                    const influencerPlatforms = influencer.platforms || [];
+                    const platformMatch = filters.platforms.some(platform => 
+                        influencerPlatforms.includes(platform)
+                    );
+                    if (!platformMatch) return false;
+                }
+                
+                // Budget filter
+                if (filters.minBudget && influencer.minBudget < parseInt(filters.minBudget)) {
+                    return false;
+                }
+                if (filters.maxBudget && influencer.minBudget > parseInt(filters.maxBudget)) {
+                    return false;
+                }
+
+               // Gender filter  
+                if (filters.gender && filters.gender.length > 0) {
+                    const normalizedGender = influencer.gender.toLowerCase();
+                    if (!filters.gender.includes(normalizedGender)) {
+                        return false;
+                    }
+                }
+                                
+                // Followers filter
+                if (filters.followers.length > 0) {
+                    const followersMatch = filters.followers.some(range => {
+                        if (range === 'micro' && influencer.followers >= 1000 && influencer.followers <= 100000) return true;
+                        if (range === 'macro' && influencer.followers > 100000 && influencer.followers <= 1000000) return true;
+                        if (range === 'mega' && influencer.followers > 1000000) return true;
+                        return false;
+                    });
+                    if (!followersMatch) return false;
+                }
+                
+                return true;
+            });
+            
+            updateActiveTags();
+            displayInfluencers(filteredInfluencers);
+        }
+
+        // Get checked values from filter group
+        function getCheckedValues(groupName) {
+            const checkboxes = document.querySelectorAll(`#${groupName}-filter input[type="checkbox"]:checked`);
+            return Array.from(checkboxes).map(cb => cb.value);
+        }
+
+        // Clear all filters
+        function clearFilters() {
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            document.getElementById('minBudget').value = '';
+            document.getElementById('maxBudget').value = '';
+            document.getElementById('locationSearch').value = '';
+            document.getElementById('globalSearch').value = '';
+            
+            currentFilters = {};
+            filteredInfluencers = [...influencersData];
+            updateActiveTags();
+            displayInfluencers(filteredInfluencers);
+        }
+
+        // Update active filter tags
+        function updateActiveTags() {
+            const tagsContainer = document.getElementById('activeTags');
+            tagsContainer.innerHTML = '<span class="tag">Recommended</span>';
+            
+            if (currentFilters.categories && currentFilters.categories.length > 0) {
+                currentFilters.categories.forEach(cat => {
+                    tagsContainer.innerHTML += `<span class="tag">${cat}</span>`;
+                });
+            }
+            
+            if (currentFilters.locations && currentFilters.locations.length > 0) {
+                currentFilters.locations.forEach(loc => {
+                    tagsContainer.innerHTML += `<span class="tag">${loc}</span>`;
+                });
+            }
+            // Add after locations section:
+            if (currentFilters.platforms && currentFilters.platforms.length > 0) {
+                currentFilters.platforms.forEach(platform => {
+                    tagsContainer.innerHTML += `<span class="tag">${platform}</span>`;
+                });
+            }
+
+            if (currentFilters.gender && currentFilters.gender.length > 0) {
+                currentFilters.gender.forEach(gender => {
+                    tagsContainer.innerHTML += `<span class="tag">${gender}</span>`;
+                });
+            }
+        }
+
+        // Sort influencers
+        function sortInfluencers() {
+            const sortBy = document.getElementById('sortBy').value;
+            
+            switch (sortBy) {
+                case 'followers':
+                    filteredInfluencers.sort((a, b) => b.followers - a.followers);
+                    break;
+                case 'budget':
+                    filteredInfluencers.sort((a, b) => a.minBudget - b.minBudget);
+                    break;
+                case 'name':
+                    filteredInfluencers.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+                default:
+                    filteredInfluencers.sort((a, b) => b.recommended - a.recommended);
+            }
+            
+            displayInfluencers(filteredInfluencers);
+        }
+
+        // Global search
+        function performGlobalSearch() {
+            const searchTerm = document.getElementById('globalSearch').value.toLowerCase();
+            
+            if (!searchTerm) {
+                filteredInfluencers = [...influencersData];
+            } else {
+                filteredInfluencers = influencersData.filter(influencer => 
+                    influencer.name.toLowerCase().includes(searchTerm) ||
+                    influencer.category.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            displayInfluencers(filteredInfluencers);
+        }
+
+        // Location search
+        document.getElementById('locationSearch').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const options = document.querySelectorAll('#location-filter .filter-option');
+            
+            options.forEach(option => {
+                const label = option.querySelector('label').textContent.toLowerCase();
+                option.style.display = label.includes(searchTerm) ? 'flex' : 'none';
+            });
+        });
+
+        // Enter key search
+        document.getElementById('globalSearch').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performGlobalSearch();
+            }
+        });
+
+        // Open modal
+        function openModal(influencer) {
+            const modal = document.getElementById('influencerModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            
+            modalTitle.textContent = influencer.name;
+            modalBody.innerHTML = `
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #8b5cf6); display: flex; align-items: center; justify-content: center; font-size: 40px; color: white; margin: 0 auto 15px;">
+                        ${influencer.image}
+                    </div>
+                    <h3>${influencer.name}</h3>
+                    <p style="color: #666;">${influencer.category}</p>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px;">
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 18px; font-weight: 600; color: #6366f1;">👥 ${formatNumber(influencer.followers)}</div>
+                        <div style="font-size: 12px; color: #666;">Followers</div>
+                    </div>
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 18px; font-weight: 600; color: #6366f1;">📊 ${influencer.engagement}</div>
+                        <div style="font-size: 12px; color: #666;">Engagement Rate</div>
+                    </div>
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 18px; font-weight: 600; color: #6366f1;">👁️ ${influencer.avgViews}</div>
+                        <div style="font-size: 12px; color: #666;">Avg Views</div>
+                    </div>
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 18px; font-weight: 600; color: #6366f1;">💰 ${influencer.budget}</div>
+                        <div style="font-size: 12px; color: #666;">Campaign Cost</div>
+                    </div>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                    <h4 style="margin-bottom: 10px;">📋 Campaign Options</h4>
+                    <ul style="margin: 0; padding-left: 20px;">
+                        <li>Instagram Post + Story</li>
+                        <li>YouTube Video Integration</li>
+                        <li>Live Session Collaboration</li>
+                        <li>Product Review & Unboxing</li>
+                    </ul>
+                </div>
+                
+                <div style="display: flex; gap: 10px;">
+                    <button onclick="contactInfluencer('${influencer.name}')" style="flex: 1; padding: 12px; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer;">
+                        Contact Now
+                    </button>
+                    <button onclick="addToWishlist('${influencer.name}')" style="flex: 1; padding: 12px; background: #f8f9fa; color: #666; border: 1px solid #ddd; border-radius: 10px; font-weight: 600; cursor: pointer;">
+                        Add to Wishlist
+                    </button>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close modal
+        function closeModal() {
+            const modal = document.getElementById('influencerModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Contact influencer
+        function contactInfluencer(name) {
+            alert(`Contacting ${name}... \n\nOur team will reach out to you within 24 hours with campaign details and pricing!`);
+            closeModal();
+        }
+
+        // Add to wishlist
+        function addToWishlist(name) {
+            alert(`${name} has been added to your wishlist! \n\nYou can view all saved influencers in your dashboard.`);
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('influencerModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Auto-apply filters when checkboxes change
+        document.addEventListener('change', function(e) {
+            if (e.target.type === 'checkbox') {
+                applyFilters();
+            }
+        });
+
+        // Budget range auto-apply
+        document.getElementById('minBudget').addEventListener('input', debounce(applyFilters, 500));
+        document.getElementById('maxBudget').addEventListener('input', debounce(applyFilters, 500));
+
+        // Debounce function
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Add smooth scroll and animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate cards on load
+            setTimeout(() => {
+                const cards = document.querySelectorAll('.influencer-card');
+                cards.forEach((card, index) => {
+                    setTimeout(() => {
+                        card.style.opacity = '0';
+                        card.style.transform = 'translateY(20px)';
+                        card.style.transition = 'all 0.5s ease';
+                        
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0)';
+                        }, 50);
+                    }, index * 100);
+                });
+            }, 600);
+        });
+    </script>
+</body>
+</html>

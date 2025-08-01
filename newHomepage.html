@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediaHub Pro - Interactive</title>
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    /* Animations */
+    @keyframes slideInUp {
+      from {
+        transform: translateY(50px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideInLeft {
+      from {
+        transform: translateX(-50px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
+
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+
+    /* Header Icons - Add this after existing header styles */
+    .header-icons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    }
+
+    .icon-button {
+    position: relative;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #6a11cb, #2575fc);
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(106, 17, 203, 0.3);
+    }
+
+    .icon-button:hover {
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: 0 8px 25px rgba(106, 17, 203, 0.4);
+    }
+
+    .search-icon::before {
+    content: "🔍";
+    font-size: 16px;
+    }
+
+    .notification-icon::before {
+    content: "🔔";
+    font-size: 16px;
+    }
+
+    .login-icon::before {
+    content: "👤";
+    font-size: 16px;
+    }
+
+    .notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ff4757;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 11px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+    }
+
+    /* Responsive adjustment */
+    @media (max-width: 768px) {
+  .header-icons {
+    gap: 10px;
+  }
+  
+  .icon-button {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+}
+    
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      background: linear-gradient(45deg, #6a11cb, #2575fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .logo:hover {
+      transform: scale(1.1);
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      position: relative;
+      transition: all 0.3s ease;
+      padding: 10px 15px;
+      border-radius: 25px;
+    }
+
+    nav ul li a:hover {
+      background: linear-gradient(45deg, #6a11cb, #2575fc);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .mobile-menu {
+      display: none;
+      cursor: pointer;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .mobile-menu span {
+      width: 25px;
+      height: 3px;
+      background: #333;
+      transition: 0.3s;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 180px 20px 120px;
+      text-align: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .hero h1 {
+      font-size: 4rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+      animation: slideInUp 1s ease;
+    }
+
+    .hero p {
+      font-size: 1.4rem;
+      margin-bottom: 30px;
+      animation: slideInUp 1s ease 0.3s both;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      padding: 15px 40px;
+      background: rgba(255, 255, 255, 0.2);
+      border: 2px solid white;
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      animation: slideInUp 1s ease 0.6s both;
+    }
+
+    .hero-cta:hover {
+      background: white;
+      color: #6a11cb;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    /* Influencers Section */
+    .influencers {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      padding: 80px 20px;
+      background: #fff;
+    }
+
+    .influencer-card {
+      padding: 30px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      color: white;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .influencer-card::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      transition: all 0.5s ease;
+      transform: translate(-50%, -50%);
+    }
+
+    .influencer-card:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .influencer-card:hover {
+      transform: translateY(-10px) scale(1.05);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+
+    .influencer-card h3 {
+      position: relative;
+      z-index: 1;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .influencer-card .stats {
+      position: relative;
+      z-index: 1;
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    /* Two Column Section */
+    .two-column {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 80px 20px;
+      gap: 60px;
+      justify-content: center;
+      align-items: center;
+      background: #fff;
+    }
+
+    .two-column .text {
+      flex: 1 1 400px;
+    }
+
+    .two-column .text h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .two-column .text p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 30px;
+      color: #666;
+    }
+
+    .two-column .image {
+      flex: 1 1 400px;
+      height: 300px;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .two-column .image:hover {
+      transform: scale(1.05);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+
+    .two-column .image::before {
+      content: '';
+      position: absolute;
+       top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50MF9saW5lYXIiIHgxPSIwIiB5MT0iMCIgeDI9IjQwMCIgeTI9IjMwMCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjNjM2NkYxIi8+CjxzdG9wIG9mZnNldD0iMC41IiBzdG9wLWNvbG9yPSIjOEI1Q0Y2Ii8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0VDNDg5OSIvPgo8L2xpbmVhckdyYWRpZW50Pgo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50MV9yYWRpYWwiIGN4PSI1MCUiIGN5PSI1MCUiIHI9IjUwJSIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNCkiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMSkiLz4KPC9saW5lYXJHcmFkaWVudD4KPC9kZWZzPgoKPCEtLSBCYWNrZ3JvdW5kIC0tPgo8cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0idXJsKCNwYWludDBfbGluZWFyKSIvPgoKPCEtLSBCYWNrZ3JvdW5kIGVsZW1lbnRzIC0tPgo8Y2lyY2xlIGN4PSIzNTAiIGN5PSI1MCIgcj0iMzAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIvPgo8Y2lyY2xlIGN4PSI1MCIgY3k9IjI1MCIgcj0iMjUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIvPgo8Y2lyY2xlIGN4PSIzNTAiIGN5PSIyNTAiIHI9IjIwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMSkiLz4KCjwhLS0gQ2VudHJhbCBsYXB0b3Avc2NyZWVuIC0tPgo8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNTAsIDEwMCkiPgogIDwhLS0gTGFwdG9wIGJhc2UgLS0+CiAgPHJlY3QgeD0iMTAiIHk9IjgwIiB3aWR0aD0iODAiIGhlaWdodD0iNDAiIHJ4PSI0IiBmaWxsPSIjMkQzNzQ4Ii8+CiAgPCEtLSBMYXB0b3Agc2NyZWVuIC0tPgogIDxyZWN0IHg9IjIwIiB5PSIyMCIgd2lkdGg9IjYwIiBoZWlnaHQ9IjY1IiByeD0iMyIgZmlsbD0iIzFBMjAyQyIvPgogIDwhLS0gU2NyZWVuIGNvbnRlbnQgLS0+CiAgPHJlY3QgeD0iMjUiIHk9IjI1IiB3aWR0aD0iNTAiIGhlaWdodD0iMzUiIHJ4PSIyIiBmaWxsPSIjNDI5OUUxIi8+CiAgPCEtLSBHcm93dGggY2hhcnQgb24gc2NyZWVuIC0tPgogIDxwYXRoIGQ9Ik0zMCA1MCBMM3MgNDUgTDQwIDQyIEw0NSAzOCBMNTAgMzUgTDU1IDMwIEw2MCAyNSBMNjUgMjIgTDcwIDE4IiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIvPgogIDwhLS0gQ2hhcnQgYmFycyAtLT4KICA8cmVjdCB4PSIzMCIgeT0iNTAiIHdpZHRoPSIzIiBoZWlnaHQ9IjgiIGZpbGw9IiNGRkZGRkYiLz4KICA8cmVjdCB4PSIzNyIgeT0iNDciIHdpZHRoPSIzIiBoZWlnaHQ9IjExIiBmaWxsPSIjRkZGRkZGIi8+CiAgPHJlY3QgeD0iNDQiIHk9IjQyIiB3aWR0aD0iMyIgaGVpZ2h0PSIxNiIgZmlsbD0iI0ZGRkZGRiIvPgogIDxyZWN0IHg9IjUxIiB5PSIzOCIgd2lkdGg9IjMiIGhlaWdodD0iMjAiIGZpbGw9IiNGRkZGRkYiLz4KICA8cmVjdCB4PSI1OCIgeT0iMzIiIHdpZHRoPSIzIiBoZWlnaHQ9IjI2IiBmaWxsPSIjRkZGRkZGIi8+CiAgPHJlY3QgeD0iNjUiIHk9IjI1IiB3aWR0aD0iMyIgaGVpZ2h0PSIzMyIgZmlsbD0iI0ZGRkZGRiIvPgo8L2c+Cgo8IS0tIFNvY2lhbCBtZWRpYSBpY29ucyBmbG9hdGluZyBhcm91bmQgLS0+CjwhLS0gSW5zdGFncmFtIGljb24gLS0+CjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDgwLCA2MCkiPgogIDxjaXJjbGUgY3g9IjE1IiBjeT0iMTUiIHI9IjE4IiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMjUpIi8+CiAgPHJlY3QgeD0iNyIgeT0iNyIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiByeD0iNSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjIiLz4KICA8Y2lyY2xlIGN4PSIxNSIgY3k9IjE1IiByPSI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMiIvPgogIDxjaXJjbGUgY3g9IjE5IiBjeT0iMTEiIHI9IjEuNSIgZmlsbD0iI0ZGRkZGRiIvPgo8L2c+Cgo8IS0tIFNlYXJjaC9TRU8gaWNvbiAtLT4KPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzAwLCA4MCkiPgogIDxjaXJjbGUgY3g9IjE1IiBjeT0iMTUiIHI9IjE4IiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMjUpIi8+CiAgPGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iNiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjIiLz4KICA8cGF0aCBkPSJtMTYgMTYgNCA0IiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMiIvPgo8L2c+Cgo8IS0tIFRhcmdldC9BZHMgaWNvbiAtLT4KPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjAsIDE2MCkiPgogIDxjaXJjbGUgY3g9IjE1IiBjeT0iMTUiIHI9IjE4IiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMjUpIi8+CiAgPGNpcmNsZSBjeD0iMTUiIGN5PSIxNSIgcj0iOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjIiLz4KICA8Y2lyY2xlIGN4PSIxNSIgY3k9IjE1IiByPSI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMiIvPgogIDxjaXJjbGUgY3g9IjE1IiBjeT0iMTUiIHI9IjEuNSIgZmlsbD0iI0ZGRkZGRiIvPgo8L2c+Cgo8IS0tIEVtYWlsL01hcmtldGluZyBpY29uIC0tPgo8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzMjAsIDE2MCkiPgogIDxjaXJjbGUgY3g9IjE1IiBjeT0iMTUiIHI9IjE4IiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMjUpIi8+CiAgPHJlY3QgeD0iNiIgeT0iOSIgd2lkdGg9IjE4IiBoZWlnaHQ9IjEyIiByeD0iMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjIiLz4KICA8cGF0aCBkPSJtNiA5IDkgNiA5LTYiIHN0cm9rZT0iI0ZGRkZGRiIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSJub25lIi8+CjwvZz4KCjwhLS0gQW5hbHl0aWNzL0NoYXJ0IGljb24gLS0+CjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEwMCwgMjIwKSI+CiAgPGNpcmNsZSBjeD0iMTUiIGN5PSIxNSIgcj0iMTgiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4yNSkiLz4KICA8cGF0aCBkPSJNNyAyMSBMMTIgMTYgTDE2IDE4IEwyMyAxMSIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjIiIGZpbGw9Im5vbmUiLz4KICA8Y2lyY2xlIGN4PSIxMiIgY3k9IjE2IiByPSIxLjUiIGZpbGw9IiNGRkZGRkYiLz4KICA8Y2lyY2xlIGN4PSIxNiIgY3k9IjE4IiByPSIxLjUiIGZpbGw9IiNGRkZGRkYiLz4KICA8Y2lyY2xlIGN4PSIyMyIgY3k9IjExIiByPSIxLjUiIGZpbGw9IiNGRkZGRkYiLz4KPC9nPgoKPCEtLSBDb250ZW50L0Jsb2cgaWNvbiAtLT4KPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjgwLCAyMjApIj4KICA8Y2lyY2xlIGN4PSIxNSIgY3k9IjE1IiByPSIxOCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjI1KSIvPgogIDxyZWN0IHg9IjgiIHk9IjYiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxOCIgcng9IjIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0ZGRkZGRiIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgPGxpbmUgeDE9IjExIiB5MT0iMTAiIHgyPSIxOSIgeTI9IjEwIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS41Ii8+CiAgPGxpbmUgeDE9IjExIiB5MT0iMTQiIHgyPSIxOSIgeTI9IjE0IiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS41Ii8+CiAgPGxpbmUgeDE9IjExIiB5MT0iMTgiIHgyPSIxNiIgeTI9IjE4IiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS41Ii8+CjwvZz4KCjwhLS0gQ29ubmVjdGluZyBsaW5lcyAtLT4KPGcgb3BhY2l0eT0iMC40Ij4KICA8cGF0aCBkPSJNOTggNzUgTDE3MCAxMjAiIHN0cm9rZT0iI0ZGRkZGRiIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtZGFzaGFycmF5PSIzLDMiLz4KICA8cGF0aCBkPSJNMzAwIDk1IEwyMzAgMTMwIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLWRhc2hhcnJheT0iMywzIi8+CiAgPHBhdGggZD0iTTc4IDE3NSBMMTcwIDE2MCIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1kYXNoYXJyYXk9IjMsMyIvPgogIDxwYXRoIGQ9Ik0zMjAgMTc1IEwyMzAgMTYwIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLWRhc2hhcnJheT0iMywzIi8+CiAgPHBhdGggZD0iTTExOCAyMzUgTDE4MCAxODUiIHN0cm9rZT0iI0ZGRkZGRiIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtZGFzaGFycmF5PSIzLDMiLz4KICA8cGF0aCBkPSJNMjgwIDIzNSBMMjIwIDE4NSIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1kYXNoYXJyYXk9IjMsMyIvPgo8L2c+Cgo8IS0tIEZsb2F0aW5nIHBhcnRpY2xlcyAtLT4KPGNpcmNsZSBjeD0iNDAiIGN5PSI4MCIgcj0iMiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjYpIi8+CjxjaXJjbGUgY3g9IjM2MCIgY3k9IjEyMCIgcj0iMS41IiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNikiLz4KPGNpcmNsZSBjeD0iMzAiIGN5PSIyMDAiIHI9IjIuNSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjYpIi8+CjxjaXJjbGUgY3g9IjM3MCIgY3k9IjIwMCIgcj0iMiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjYpIi8+CjxjaXJjbGUgY3g9IjIwMCIgY3k9IjMwIiByPSIxLjUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC42KSIvPgo8Y2lyY2xlIGN4PSIyMDAiIGN5PSIyNzAiIHI9IjIiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC42KSIvPgoKPCEtLSBHcm93dGggYXJyb3cgLS0+CjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMyMCwgMzApIj4KICA8cGF0aCBkPSJNNSAyNSBMMjUgNSIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiLz4KICA8cGF0aCBkPSJNMjUgNSBMMjAgNSBNMjUgNSBMMjUgMTAiIHN0cm9rZT0iI0ZGRkZGRiIgc3Ryb2tlLXdpZHRoPSIzIiBmaWxsPSJub25lIi8+CjwvZz4KCjwhLS0gU3VjY2VzcyBpbmRpY2F0b3JzIC0tPgo8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1MCwgMzApIj4KICA8Y2lyY2xlIGN4PSIxNSIgY3k9IjE1IiByPSIxMiIgZmlsbD0icmdiYSgzNCwgMTk3LCA5NCwgMC4zKSIvPgogIDxwYXRoIGQ9Ik05IDE1IEwxMyAxOSBMMjEgMTEiIHN0cm9rZT0iIzIyQzU1RSIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSJub25lIi8+CjwvZz4KPC9zdmc+') center/cover no-repeat;
+      z-index: 1;
+      font-size: 4rem;
+      animation: pulse 2s infinite;
+    }
+
+    /* Clients Strip */
+    .clients-strip {
+      background: linear-gradient(135deg, #ffecd2 0%, #ff9b79 100%);
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .clients-strip h3 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .clients-strip p {
+      font-size: 1.1rem;
+      color: #666;
+      margin-bottom: 40px;
+    }
+
+    .clients-strip .logos {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .client-logo {
+      width: 80px;
+      height: 80px;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .client-logo:hover {
+      transform: translateY(-5px) scale(1.1);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    /* Section Titles */
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      margin: 60px 0 40px;
+      color: #333;
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(45deg, #6a11cb, #2575fc);
+      border-radius: 2px;
+    }
+
+    /* Card Grid */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      padding: 0 20px 40px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      padding: 30px;
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .card:hover::before {
+      left: 100%;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+
+    .card-image {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 15px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    .card:hover .card-image {
+      transform: scale(1.05);
+    }
+
+    .card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    .card p {
+      font-size: 1rem;
+      color: #666;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      padding: 12px 30px;
+      background: linear-gradient(45deg, #6a11cb, #2575fc);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      text-decoration: none;
+      display: inline-block;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      transform: translate(-50%, -50%);
+    }
+
+    .btn:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    /* Testimonials */
+    .testimonials {
+      padding: 60px 20px;
+      background: #fff;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .testimonial {
+      padding: 30px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .testimonial::before {
+      content: '"';
+      position: absolute;
+      top: 10px;
+      left: 20px;
+      font-size: 3rem;
+      color: rgba(255,255,255,0.3);
+      font-weight: bold;
+    }
+
+    .testimonial:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+
+    .testimonial p {
+      font-style: italic;
+      margin-bottom: 15px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .testimonial .author {
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .testimonial .stars {
+      color: #ffd700;
+      font-size: 1.2rem;
+    }
+
+    /* Footer */
+    footer {
+      background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+      color: white;
+      padding: 60px 20px 30px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .footer-grid h4 {
+      color: #ffd700;
+      margin-bottom: 20px;
+      font-size: 1.2rem;
+    }
+
+    .footer-grid p,
+    .footer-grid a {
+      color: #ecf0f1;
+      font-size: 0.95rem;
+      line-height: 1.8;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-grid a:hover {
+      color: #ffd700;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      font-size: 0.9rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 20px;
+      color: #bdc3c7;
+    }
+
+    /* Scroll to Top */
+    .scroll-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: linear-gradient(45deg, #6a11cb, #2575fc);
+      color: white;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+      opacity: 0;
+      visibility: hidden;
+      z-index: 1000;
+    }
+
+    .scroll-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .scroll-to-top:hover {
+      transform: translateY(-5px) scale(1.1);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+      background: white;
+      margin: 10% auto;
+      padding: 40px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+      animation: slideInUp 0.5s ease;
+    }
+
+    .modal h2 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .modal p {
+      color: #666;
+      margin-bottom: 30px;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .close:hover {
+      color: #333;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .hero p {
+        font-size: 1.1rem;
+      }
+      
+      .mobile-menu {
+        display: flex;
+      }
+      
+      nav ul {
+        display: none;
+      }
+      
+      .two-column {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .clients-strip .logos {
+        gap: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+ <header>
+  <div class="logo" onclick="scrollToTop()">Biz-Media</div>
+  <nav>
+    <ul>
+      <li><a onclick="scrollToSection('hero'); return false;">Home</a></li>
+      <li><a onclick="scrollToSection('services'); return false;">Services</a></li>
+      <li><a onclick="scrollToSection('about'); return false;">About Us</a></li>
+      <li><a onclick="scrollToSection('footer'); return false;">Contact Us</a></li>
+    </ul>
+  </nav>
+  
+  <!-- Header Icons -->
+  <div class="header-icons">
+    <button class="icon-button search-icon" onclick="handleSearch()" title="Search"></button>
+    <button class="icon-button notification-icon" onclick="handleNotifications()" title="Notifications">
+      <span class="notification-badge">3</span>
+    </button>
+    <button class="icon-button login-icon" onclick="handleLogin()" title="Login/Profile"></button>
+  </div>
+  
+  <div class="mobile-menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</header>
+  <section class="hero" id="hero">
+    <h1>Welcome to Biz-Media</h1>
+    <p><strong>Transforming Businesses Through Digital Innovation</strong></p>
+    <a href="#" class="hero-cta" onclick="showModal()">Get Started Today</a>
+  </section>
+
+  <section class="influencers animate-on-scroll" id="influencers">
+    <div class="influencer-card" onclick="showInfluencerDetails('Tech Guru')">
+      <h3>Tech Guru</h3>
+      <div class="stats">2.5M Followers</div>
+    </div>
+    <div class="influencer-card" onclick="showInfluencerDetails('Fashion Icon')">
+      <h3>Fashion Icon</h3>
+      <div class="stats">1.8M Followers</div>
+    </div>
+    <div class="influencer-card" onclick="showInfluencerDetails('Food Blogger')">
+      <h3>Food Blogger</h3>
+      <div class="stats">3.2M Followers</div>
+    </div>
+    <div class="influencer-card" onclick="showInfluencerDetails('Travel Vlogger')">
+      <h3>Travel Vlogger</h3>
+      <div class="stats">1.9M Followers</div>
+    </div>
+    <div class="influencer-card" onclick="showInfluencerDetails('Fitness Coach')">
+      <h3>Fitness Coach</h3>
+      <div class="stats">2.1M Followers</div>
+    </div>
+  </section>
+  
+    <!-- Fixed: Added proper ID to the services section -->
+  <section id="services">
+    <h2 class="section-title animate-on-scroll">Our Services</h2>
+    <div class="card-grid animate-on-scroll">
+      <div class="card" onclick="showServiceDetails('Google Ads')">
+        <div class="card-image">📱</div>
+        <h3>Influencer</h3>
+        <p>Influencer Marketing</p>
+        <p>1000+ Influencers, Maximum Impac</p>
+        <a class="btn" href="#" onclick="event.stopPropagation(); showModal()">Learn More</a>
+      </div>
+      <div class="card" onclick="showServiceDetails('Social Media')">
+        <div class="card-image">📰</div>
+        <h3>Newspaper</h3>
+        <p>Newspaper Marketing</p>
+        <p>Your Story in Every Home.</p>
+        <a class="btn" href="#" onclick="event.stopPropagation(); showModal()">Learn More</a>
+      </div>
+      <div class="card" onclick="showServiceDetails('SEO')">
+        <div class="card-image">💻</div>
+        <h3>Digital</h3>
+        <p>Digital Marketing</p>
+        <p>Boost Your Online Presence with Our Expertise.</p>
+        <a class="btn" href="#" onclick="event.stopPropagation(); showModal()">Learn More</a>
+      </div>
+      <div class="card" onclick="showServiceDetails('SEO')">
+        <div class="card-image">📚</div>
+        <h3>Magazine</h3>
+        <p>Magazine Marketing</p>
+        <p>From Pages to Profits</p>
+        <a class="btn" href="#" onclick="event.stopPropagation(); showModal()">Learn More</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="clients-strip animate-on-scroll">
+    <h3>Our Trusted Partners</h3>
+    <p>Working with industry leaders to deliver exceptional results</p>
+    <div class="logos">
+      <div class="client-logo" onclick="showClientInfo('Google')">G</div>
+      <div class="client-logo" onclick="showClientInfo('Facebook')">F</div>
+      <div class="client-logo" onclick="showClientInfo('Amazon')">A</div>
+      <div class="client-logo" onclick="showClientInfo('Microsoft')">M</div>
+    </div>
+  </section>
+
+   <section class="two-column animate-on-scroll" id="about">
+    <div class="text">
+      <h2>About Us</h2>
+      <p>Biz-Media is on a mission to become India's most trusted digital marketing partner. With our innovative approach to brand building and performance marketing, we're creating success stories by combining creativity, technology, and strategic thinking to accelerate business growth.</p>
+      <a class="btn" href="#" onclick="showModal()">Learn More</a>
+    </div>
+    <div class="image"></div>
+  </section>
+
+  <h2 class="section-title animate-on-scroll">Client Success Stories</h2>
+  <section class="testimonials animate-on-scroll">
+    <div class="testimonial" onclick="showFullTestimonial('Sarah Johnson')">
+      <div class="author">Sarah Johnson</div>
+      <p>MediaHub Pro transformed our digital presence completely. Their strategic approach increased our conversions by 300%!</p>
+      <div class="stars">★★★★★</div>
+    </div>
+    <div class="testimonial" onclick="showFullTestimonial('Michael Chen')">
+      <div class="author">Michael Chen</div>
+      <p>Outstanding results and professional service. The team really understands modern marketing challenges.</p>
+      <div class="stars">★★★★★</div>
+    </div>
+    <div class="testimonial" onclick="showFullTestimonial('Emily Rodriguez')">
+      <div class="author">Emily Rodriguez</div>
+      <p>Their influencer marketing campaigns delivered beyond our expectations. Highly recommended!</p>
+      <div class="stars">★★★★★</div>
+    </div>
+    <div class="testimonial" onclick="showFullTestimonial('David Park')">
+      <div class="author">David Park</div>
+      <p>Professional, creative, and results-driven. MediaHub Pro is our go-to marketing partner.</p>
+      <div class="stars">★★★★★</div>
+    </div>
+  </section>
+
+  <h2 class="section-title animate-on-scroll">Coming Soon</h2>
+  <div class="card-grid animate-on-scroll">
+    <div class="card">
+      <div class="card-image">🏪</div>
+      <h3>Outdoor</h3>
+      <p>Billboards that Build Brands</p>
+      <a class="btn" href="#" onclick="showModal()">Notify Me</a>
+    </div>
+    <div class="card">
+      <div class="card-image">📺</div>
+      <h3>Television</h3>
+      <p>Prime Time, Prime Results</p>
+      <a class="btn" href="#" onclick="showModal()">Notify Me</a>
+    </div>
+    <div class="card">
+      <div class="card-image">📻</div>
+      <h3>Radio</h3>
+      <p>Listen Up, Sales Up</p>
+      <a class="btn" href="#" onclick="showModal()">Notify Me</a>
+    </div>
+  </div>
+
+  <footer id="footer">
+  <div class="footer-grid">
+    <div>
+        <h4>Biz-Media</h4>
+        <p>Amplify Your Brand on Social Media</p>
+      </div>
+    <div>
+      <h4>Contact Info</h4>
+      <p>📧 Kaushal@bizleap.in</p>
+      <p>📞 +91 81-28121004</p>
+      <p>📍 Nagpur, India</p>
+      <p>📷 <a href="https://www.instagram.com/bizleap.in/" target="_blank">@bizleap.in</a></p>
+    </div>
+      <div>
+        <h4>Services</h4>
+        <p><a href="#">Digital Advertising</a></p>
+        <p><a href="#">Social Media Marketing</a></p>
+        <p><a href="#">Newspaper Marketing</a></p>
+        <p><a href="#">SEO & Content</a></p>
+        <p><a href="#">Influencer Marketing</a></p>
+      </div>
+      <div>
+        <h4>Quick Link</h4>
+        <p><a href="#">Home</a></p>
+        <p><a href="#">About us</a></p>
+        <p><a href="#">Services</a></p>
+        <p><a href="#">Contact</a></p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2025 MediaHub Pro. All rights reserved. | Leading Digital Marketing Agency
+    </div>
+  </footer>
+
+  <div class="scroll-to-top" onclick="scrollToTop()">↑</div>
+
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2 id="modal-title">Get Started Today!</h2>
+      <p id="modal-text">Ready to transform your digital presence? Let's discuss how we can help grow your business.</p>
+      <a class="btn" href="#" onclick="closeModal()">Schedule a Call</a>
+    </div>
+  </div>
+
+  <script>
+    // Header Icon Functions - Add before closing script tag
+function handleSearch() {
+  const query = prompt("What would you like to search for?");
+  if (query) {
+    alert(`Searching for: ${query}`);
+    // You can implement actual search functionality here
+  }
+}
+
+function handleNotifications() {
+  alert("You have 3 new notifications:\n• Campaign performance update\n• New collaboration request\n• Monthly report ready");
+  
+  // Hide notification badge after viewing
+  const badge = document.querySelector('.notification-badge');
+  badge.style.display = 'none';
+}
+
+function handleLogin() {
+  const isLoggedIn = confirm("Click OK to Login or Cancel to view Profile");
+  if (isLoggedIn) {
+    const email = prompt("Enter your email:");
+    if (email) {
+      alert(`Welcome back, ${email}!`);
+      // Change icon color to indicate logged in status
+      const loginIcon = document.querySelector('.login-icon');
+      loginIcon.style.background = 'linear-gradient(45deg, #28a745, #20c997)';
+    }
+  } else {
+    alert("Viewing user profile...");
+  }
+}
+    // Smooth scrolling and animations
+    function scrollToSection(sectionId) {
+      const section = document.getElementById(sectionId);
+      if (section) {
+        const headerHeight = document.querySelector('header').offsetHeight;
+        const elementPosition = section.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerHeight - 20;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Show/hide scroll to top button
+    window.addEventListener('scroll', function() {
+      const scrollBtn = document.querySelector('.scroll-to-top');
+      if (window.scrollY > 300) {
+        scrollBtn.classList.add('visible');
+      } else {
+        scrollBtn.classList.remove('visible');
+      }
+      
+      // Header transparency
+      const header = document.querySelector('header');
+      if (window.scrollY > 100) {
+        header.style.background = 'rgba(255, 255, 255, 0.95)';
+      } else {
+        header.style.background = 'rgba(255, 255, 255, 0.95)';
+      }
+    });
+
+    // Scroll animation observer
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    // Observe all animated elements
+    document.querySelectorAll('.animate-on-scroll').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Modal functions
+    function showModal() {
+      document.getElementById('modal').style.display = 'block';
+    }
+
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+    }
+
+    // Interactive functions
+    function showInfluencerDetails(influencer) {
+      const modal = document.getElementById('modal');
+      const title = document.getElementById('modal-title');
+      const text = document.getElementById('modal-text');
+      
+      title.textContent = influencer;
+      text.textContent = `Connect with ${influencer} for your next campaign. They specialize in creating authentic content that resonates with their engaged audience.`;
+      modal.style.display = 'block';
+    }
+
+    function showServiceDetails(service) {
+      const modal = document.getElementById('modal');
+      const title = document.getElementById('modal-title');
+      const text = document.getElementById('modal-text');
+      
+      title.textContent = service;
+      
+      const serviceDetails = {
+        'Google Ads': 'Our Google Ads specialists create targeted campaigns that deliver measurable results. From keyword research to conversion optimization, we handle everything.',
+        'Social Media': 'Build your brand across Facebook, Instagram, LinkedIn, and Twitter. Our social media experts create engaging content and manage your online presence.',
+        'SEO': 'Improve your search rankings with our comprehensive SEO strategies. We focus on both technical optimization and content creation.'
+      };
+      
+      text.textContent = serviceDetails[service] || 'Learn more about our comprehensive digital marketing services.';
+      modal.style.display = 'block';
+    }
+
+    function showClientInfo(client) {
+      const modal = document.getElementById('modal');
+      const title = document.getElementById('modal-title');
+      const text = document.getElementById('modal-text');
+      
+      title.textContent = `Partnership with ${client}`;
+      text.textContent = `We're proud to work with industry leaders like ${client}. Our partnership enables us to deliver cutting-edge solutions and stay ahead of digital trends.`;
+      modal.style.display = 'block';
+    }
+
+    function showFullTestimonial(author) {
+      const modal = document.getElementById('modal');
+      const title = document.getElementById('modal-title');
+      const text = document.getElementById('modal-text');
+      
+      title.textContent = `Testimonial from ${author}`;
+      
+      const testimonials = {
+        'Sarah Johnson': 'Working with MediaHub Pro has been a game-changer for our business. Their strategic approach and attention to detail helped us achieve a 300% increase in conversions within just 6 months.',
+        'Michael Chen': 'The team at MediaHub Pro truly understands the complexities of modern digital marketing. Their innovative solutions and professional service have exceeded our expectations.',
+        'Emily Rodriguez': 'Their influencer marketing campaigns delivered outstanding results. The ROI was incredible and the engagement rates were through the roof. Highly recommend!',
+        'David Park': 'Professional, creative, and results-driven. MediaHub Pro has become our trusted marketing partner for all our digital initiatives.'
+      };
+      
+      text.textContent = testimonials[author] || 'Thank you for choosing MediaHub Pro as your digital marketing partner.';
+      modal.style.display = 'block';
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      const modal = document.getElementById('modal');
+      if (event.target === modal) {
+        closeModal();
+      }
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeModal();
+      }
+    });
+
+    // Dynamic content loading
+    function loadMoreContent() {
+      const cardGrid = document.querySelector('.card-grid');
+      const newCard = document.createElement('div');
+      newCard.className = 'card';
+      newCard.innerHTML = `
+        <div class="card-image">🚀</div>
+        <h3>Performance Marketing</h3>
+        <p>Data-driven campaigns that focus on measurable results and ROI optimization.</p>
+        <a class="btn" href="#" onclick="showModal()">Learn More</a>
+      `;
+      cardGrid.appendChild(newCard);
+    }
+
+    // Particle animation for hero section
+    function createParticles() {
+      const hero = document.querySelector('.hero');
+      const particleCount = 50;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.style.position = 'absolute';
+        particle.style.width = '2px';
+        particle.style.height = '2px';
+        particle.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+        particle.style.borderRadius = '50%';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.top = Math.random() * 100 + '%';
+        particle.style.animation = `float ${3 + Math.random() * 4}s ease-in-out infinite`;
+        particle.style.animationDelay = Math.random() * 2 + 's';
+        hero.appendChild(particle);
+      }
+    }
+
+    // Initialize particles
+    createParticles();
+
+    // Counter animation
+    function animateCounter(element, target, duration = 2000) {
+      const start = 0;
+      const increment = target / (duration / 16);
+      let current = start;
+      
+      const timer = setInterval(() => {
+        current += increment;
+        element.textContent = Math.floor(current);
+        
+        if (current >= target) {
+          element.textContent = target;
+          clearInterval(timer);
+        }
+      }, 16);
+    }
+
+    // Typing effect
+    function typeWriter(element, text, speed = 50) {
+      let i = 0;
+      element.textContent = '';
+      
+      function type() {
+        if (i < text.length) {
+          element.textContent += text.charAt(i);
+          i++;
+          setTimeout(type, speed);
+        }
+      }
+      
+      type();
+    }
+
+    // Interactive hover effects
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-10px) scale(1.02)';
+      });
+      
+      card.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0) scale(1)';
+      });
+    });
+
+    // Dynamic background colors
+    const colors = [
+      'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+      'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+      'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+      'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
+    ];
+
+    function changeInfluencerColors() {
+      const cards = document.querySelectorAll('.influencer-card');
+      cards.forEach((card, index) => {
+        card.style.background = colors[index % colors.length];
+      });
+    }
+
+    // Initialize color changes
+    changeInfluencerColors();
+
+    // Add loading animation
+    window.addEventListener('load', function() {
+      document.body.style.opacity = '0';
+      document.body.style.transition = 'opacity 0.5s ease';
+      
+      setTimeout(() => {
+        document.body.style.opacity = '1';
+      }, 100);
+    });
+
+    // Form validation (if forms are added)
+    function validateForm(formData) {
+      const email = formData.get('email');
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      
+      if (!emailRegex.test(email)) {
+        alert('Please enter a valid email address');
+        return false;
+      }
+      
+      return true;
+    }
+
+    // Search functionality
+    function searchContent(query) {
+      const cards = document.querySelectorAll('.card');
+      const testimonials = document.querySelectorAll('.testimonial');
+      
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        if (text.includes(query.toLowerCase())) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Mobile menu toggle
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const nav = document.querySelector('nav ul');
+    
+    mobileMenu.addEventListener('click', function() {
+      nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+      nav.style.flexDirection = 'column';
+      nav.style.position = 'absolute';
+      nav.style.top = '100%';
+      nav.style.left = '0';
+      nav.style.width = '100%';
+      nav.style.background = 'white';
+      nav.style.padding = '20px';
+      nav.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+    });
+
+    // Smooth reveal on scroll
+    const revealElements = document.querySelectorAll('.card, .testimonial, .influencer-card');
+    
+    function revealOnScroll() {
+      revealElements.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const windowHeight = window.innerHeight;
+        
+        if (elementTop < windowHeight - 100) {
+          element.style.opacity = '1';
+          element.style.transform = 'translateY(0)';
+        }
+      });
+    }
+
+    // Initialize reveal animation
+    revealElements.forEach(element => {
+      element.style.opacity = '0';
+      element.style.transform = 'translateY(30px)';
+      element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    });
+
+    window.addEventListener('scroll', revealOnScroll);
+    revealOnScroll(); // Initial call
+
+    // Performance optimization
+    let ticking = false;
+    
+    function updateOnScroll() {
+      if (!ticking) {
+        requestAnimationFrame(function() {
+          revealOnScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+
+    window.addEventListener('scroll', updateOnScroll);
+
+    // Interactive statistics
+    const stats = [
+      { label: 'Happy Clients', value: 500 },
+      { label: 'Projects Completed', value: 1200 },
+      { label: 'Years Experience', value: 8 },
+      { label: 'Team Members', value: 50 }
+    ];
+
+    function createStatsSection() {
+      const statsSection = document.createElement('section');
+      statsSection.className = 'stats-section';
+      statsSection.style.cssText = `
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 80px 20px;
+        text-align: center;
+        margin: 60px 0;
+      `;
+      
+      const statsGrid = document.createElement('div');
+      statsGrid.style.cssText = `
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 40px;
+        max-width: 1200px;
+        margin: 0 auto;
+      `;
+      
+      stats.forEach(stat => {
+        const statItem = document.createElement('div');
+        statItem.innerHTML = `
+          <div style="font-size: 3rem; font-weight: bold; margin-bottom: 10px;" class="stat-number">0</div>
+          <div style="font-size: 1.1rem; opacity: 0.9;">${stat.label}</div>
+        `;
+        statsGrid.appendChild(statItem);
+      });
+      
+      statsSection.appendChild(statsGrid);
+      
+      // Insert before testimonials
+      const testimonials = document.querySelector('.testimonials');
+      testimonials.parentNode.insertBefore(statsSection, testimonials);
+      
+      // Animate counters when visible
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const numbers = entry.target.querySelectorAll('.stat-number');
+            numbers.forEach((number, index) => {
+              animateCounter(number, stats[index].value);
+            });
+          }
+        });
+      });
+      
+      observer.observe(statsSection);
+    }
+
+    // Initialize stats section
+    createStatsSection();
+
+    console.log('MediaHub Pro - Interactive website loaded successfully!');
+  </script>
+</body>
+</html>
